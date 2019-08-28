@@ -1,8 +1,20 @@
 $('#name').focus();
 $('#otherJobOption').hide();
+$('#paypal').hide();
+$('#bitcoin').hide();
 
 $('#color').prepend('<option>Please, select a T-shit theme</option>');
-$('#color option').eq(0).attr('selected', '');
+$('#color').val($('#color option').eq(0).val());
+
+function showOnlyDefaultColorOption(){
+    $('#color').children().each(function(index, element){
+        if ($(element).val() !== 'Please, select a T-shit theme'){
+            $(element).hide();
+        }
+    });
+}
+
+showOnlyDefaultColorOption();
 
 
 $('#title').on('input', function(){
@@ -17,12 +29,29 @@ $('#title').on('input', function(){
     }
 });
 
+
 $('#design').on('input', function(){
-    const $defaultColorOption = $('#color option').eq(0);
-    
-    if ($('#design')
-        .find(':selected')
-        .text() === 'Select Theme'){
-            $defaultColorOption.attr('selected', 'selected');
-        }
+    const $designValue = $('#design').val();
+    const $colorOptions = $('#color option');
+    $colorOptions.hide();
+    // elementsToDisplay = []
+
+    if ($designValue === 'js puns'){
+        $colorOptions.each(function(){
+            if ($(this).text().includes('JS Puns')){
+                $('#color').val('cornflowerblue');
+                $(this).show();
+            }
+        });
+    } else if ($designValue === 'heart js'){
+        $colorOptions.each(function(){
+            if ($(this).text().includes('JS shirt')){
+                $('#color').val('tomato');
+                $(this).show();
+            }
+        });
+    } else{
+        $('#color').val('Please, select a T-shit theme');
+    }
 });
+
