@@ -35,6 +35,35 @@ function calculateCost(element){
     return totalCost;
 }
 
+function isValidName(text){
+    return /^.+$/.test(text);
+}
+
+function isValidEmail(text){
+    return /^[^@]+@[^@.]+\.[a-z]+$/i.test(text);
+}
+
+function isValidActivitiesRegistrationField($activitiesField){
+    return Boolean($activitiesField.find(':checked').length);
+}
+
+function isValidCreditCard(creditCardDiv){
+    function isValidCardNumber(text){
+        // insert code here
+    }
+
+    function isValidZipCode(text){
+        // insert code here
+    }
+
+    function isValidCVV(text){
+        // insert code here
+    }
+
+}
+
+
+
 $('#title').on('input', function(){
     const $selectedElement = $(this).find(':selected');
     const $otherJobOptionInput = $('#otherJobOption');
