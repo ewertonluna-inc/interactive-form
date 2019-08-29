@@ -1,13 +1,16 @@
 $('#name').focus();
+
 $('#otherJobOption').hide();
-$('#paypal').hide();
-$('#bitcoin').hide();
 
 $('#color').prepend('<option>Please, select a T-shit theme</option>');
 $('#color').val($('#color option').eq(0).val());
 
 $('fieldset.activities').append('<p id="totalCost">Total: $<span></span><p>');
 $('#totalCost').hide();
+
+$('#payment option[value="select method"]').hide();
+$('#paypal').hide();
+$('#bitcoin').hide();
 
 let totalCost = 0;
 
@@ -93,7 +96,7 @@ $('fieldset.activities').on('change', (e) => {
         
         if ($activity.prop('checked')){
             /* 
-                Two Refactors TBD down here:
+                Two refactors TBD down here:
                 1 - Create function isSameDateAndTime(activity1, activity2)
                 2 - Create function enableOrDisableActivity(enable(boolean), activity)
             */
@@ -117,4 +120,15 @@ $('fieldset.activities').on('change', (e) => {
 
     });
 
+});
+
+$('#payment').on('change', () => {
+    $('#credit-card').hide();
+    $('#paypal').hide();
+    $('#bitcoin').hide();
+
+    optionText = $('#payment').find(':selected').text();
+    optionText = optionText.toLowerCase();
+
+    optionText !== 'credit card' ? ($('#' + optionText).show()) : ($('#credit-card').show());
 });
