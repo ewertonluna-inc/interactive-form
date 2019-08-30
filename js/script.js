@@ -8,6 +8,7 @@ $('#color').val($('#color option').eq(0).val());
 $('fieldset.activities').append('<p id="totalCost">Total: $<span></span><p>');
 $('#totalCost').hide();
 
+$('#payment').val('Credit Card');
 $('#payment option[value="select method"]').hide();
 $('#paypal').hide();
 $('#bitcoin').hide();
@@ -24,6 +25,11 @@ function showOnlyDefaultColorOption(){
     });
 }
 
+/**
+ * Calculates the total cost depending on if the element
+ * is checked or not. It adds and subtracts from the global
+ * total cost variable. 
+ */
 function calculateCost(element){
     let activityCost = parseInt($(element).attr('data-cost').replace(/^\$(\d+)$/, '$1'));
     
@@ -36,33 +42,84 @@ function calculateCost(element){
 }
 
 function isValidName(text){
-    return /^.+$/.test(text);
+    const isValid = /^.+$/.test(text);
+    if (isValid) {
+        $('#name').removeClass('invalidInput');
+    } else {
+        $('#name').addClass('invalidInput');
+    }
+    return isValid;
 }
 
 function isValidEmail(text){
-    return /^[^@]+@[^@.]+\.[a-z]+$/i.test(text);
+    const isValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(text);
+    if (isValid) {
+        $('#mail').removeClass('invalidInput');
+    } else {
+        $('#mail').addClass('invalidInput');
+    }
+    return isValid;
 }
 
 function isValidActivitiesRegistrationField($activitiesField){
-    return Boolean($activitiesField.find(':checked').length);
+    const isValid = Boolean($activitiesField.find(':checked').length);
+    if (isValid) {
+        $('fieldset.activities legend').removeClass('invalidInput');
+    } else {
+        $('fieldset.activities legend').addClass('invalidInput');
+    }
+    return isValid;
 }
 
-function isValidCreditCard(creditCardDiv){
-    function isValidCardNumber(text){
-        // insert code here
+function isValidCardNumber(text){
+    const isValid = /^\d{13,16}$/.test(text);
+    if (isValid) {
+        $('#cc-num').removeClass('invalidInput');
+    } else {
+        $('#cc-num').addClass('invalidInput');
     }
-
-    function isValidZipCode(text){
-        // insert code here
-    }
-
-    function isValidCVV(text){
-        // insert code here
-    }
-
+    return isValid;
 }
 
+function isValidZipCode(text){
+    const isValid = /^\d{5}$/.test(text);
+    if (isValid) {
+        $('#zip').removeClass('invalidInput');
+    } else {
+        $('#zip').addClass('invalidInput');
+    }
+    return isValid;
+}
 
+function isValidCVV(text){
+    const isValid = /^\d{3}$/.test(text);
+    if (isValid) {
+        $('#cvv').removeClass('invalidInput');
+    } else {
+        $('#cvv').addClass('invalidInput');
+    }
+    return isValid;
+}
+
+function isValidFormSubmission(){
+    const name = $('#name').val();
+    const email = $('#mail').val();
+    const cardNumber = $('#cc-num').val();
+    const zipCode = $('#zip').val();
+    const cVV = $('#cvv').val();
+    const isValidActivityField = isValidActivitiesRegistrationField($('fieldset.activities'));
+
+    if ($('#payment').val() === 'Credit Card'){
+        return isValidName(name) &&
+               isValidEmail(email) &&
+               isValidActivityField &&
+               isValidCardNumber(cardNumber) &&
+               isValidZipCode(zipCode) &&
+               isValidCVV(cVV);
+    }
+
+    return isValidName(name) && isValidEmail(email) && isValidActivityField;
+}
 
 $('#title').on('input', function(){
     const $selectedElement = $(this).find(':selected');
@@ -81,7 +138,6 @@ $('#design').on('input', () => {
     const $designValue = $('#design').val();
     const $colorOptions = $('#color option');
     $colorOptions.hide();
-    // elementsToDisplay = []
 
     if ($designValue === 'js puns'){
         $colorOptions.each(function(){
@@ -101,8 +157,6 @@ $('#design').on('input', () => {
         $('#color').val('Please, select a T-shit theme');
     }
 });
-
-
 
 
 $('fieldset.activities').on('change', (e) => {
@@ -151,6 +205,7 @@ $('fieldset.activities').on('change', (e) => {
 
 });
 
+
 $('#payment').on('change', () => {
     $('#credit-card').hide();
     $('#paypal').hide();
@@ -160,4 +215,16 @@ $('#payment').on('change', () => {
     optionText = optionText.toLowerCase();
 
     optionText !== 'credit card' ? ($('#' + optionText).show()) : ($('#credit-card').show());
+});
+
+
+$('button[type="submit"]').on('click', (e) => {
+    const isValidSubmission = isValidFormSubmission();
+    
+    if (!isValidSubmission){
+        e.preventDefault();
+
+        //Isn't setting ALL borders to red, how it's supposed to.
+        $('.invalidInput').css('border-color', 'red');
+    }
 });
