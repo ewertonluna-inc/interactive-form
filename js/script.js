@@ -52,7 +52,7 @@ function isValidName(text){
 }
 
 function isValidEmail(text){
-    const isValid = /^[^@]+@[^@.]+\.[a-z]+$/i.test(text);
+    const isValid = /^[^@]+@[^@.]+\.[a-z]+$/.test(text);
     if (isValid) {
         $('#mail').removeClass('invalidInput');
     } else {
@@ -102,23 +102,22 @@ function isValidCVV(text){
 }
 
 function isValidFormSubmission(){
-    const name = $('#name').val();
-    const email = $('#mail').val();
-    const cardNumber = $('#cc-num').val();
-    const zipCode = $('#zip').val();
-    const cVV = $('#cvv').val();
-    const isValidActivityField = isValidActivitiesRegistrationField($('fieldset.activities'));
-
+    const nameTrueOrFalse = isValidName($('#name').val());
+    const emailTrueOrFalse = isValidEmail($('#mail').val());
+    const activityFieldTrueOrFalse = isValidActivitiesRegistrationField($('fieldset.activities'));
+    
     if ($('#payment').val() === 'Credit Card'){
-        return isValidName(name) &&
-               isValidEmail(email) &&
-               isValidActivityField &&
-               isValidCardNumber(cardNumber) &&
-               isValidZipCode(zipCode) &&
-               isValidCVV(cVV);
+        const cardNumberTrueOrFalse = isValidCardNumber($('#cc-num').val());
+        const zipCodeTrueOrFalse = isValidZipCode($('#zip').val());
+        const cvvTrueOrFalse = isValidCVV($('#cvv').val());
+        
+        return nameTrueOrFalse && 
+               emailTrueOrFalse && 
+               cardNumberTrueOrFalse &&
+               zipCodeTrueOrFalse && cvvTrueOrFalse && 
+               activityFieldTrueOrFalse;
     }
-
-    return isValidName(name) && isValidEmail(email) && isValidActivityField;
+    return nameTrueOrFalse && emailTrueOrFalse && activityFieldTrueOrFalse;
 }
 
 $('#title').on('input', function(){
@@ -219,12 +218,13 @@ $('#payment').on('change', () => {
 
 
 $('button[type="submit"]').on('click', (e) => {
+    $('.invalidInput').css('border-color', '');
     const isValidSubmission = isValidFormSubmission();
     
     if (!isValidSubmission){
         e.preventDefault();
 
-        //Isn't setting ALL borders to red, how it's supposed to.
         $('.invalidInput').css('border-color', 'red');
     }
 });
+
