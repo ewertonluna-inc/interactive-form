@@ -2,9 +2,20 @@ $('#name').focus();
 
 $('#otherJobOption').hide();
 
+/* 
+Next 2 lines creates option to #color
+and sets it as default. 
+*/
 $('#color').prepend('<option>Please, select a T-shit theme</option>');
 $('#color').val($('#color option').eq(0).val());
 
+/* 
+Next 2 lines appends to the fieldset.activities 
+paragragh to display the total cost to be displayed later.
+The p span tag is added so it can be targeted 
+to manipulate it's text content dinamically 
+to display the cost number.
+*/
 $('fieldset.activities').append('<p id="totalCost">Total: $<span></span><p>');
 $('#totalCost').hide();
 
@@ -31,6 +42,7 @@ function showOnlyDefaultColorOption(){
  * total cost variable. 
  */
 function calculateCost(element){
+    // regex used to extract ONLY the number from the element[data-cost] string.
     let activityCost = parseInt($(element).attr('data-cost').replace(/^\$(\d+)$/, '$1'));
     
     if ($(element).prop('checked')){
@@ -40,6 +52,7 @@ function calculateCost(element){
     }
     return totalCost;
 }
+
 
 function isValidName(text){
     const isValid = /^.+$/.test(text);
