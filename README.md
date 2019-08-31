@@ -12,7 +12,7 @@
  on solving these 3 extra topics:
 
 1. T Shirt Section: "Hide the color label and select menu until a T-shirt design is selected from the Desing menu"
-    - This topic is done on inside the #design input event handler. 
+    - This topic is done inside the #design input event handler. 
         - More specific, on the else block.
 
 2. Conditional Error Message

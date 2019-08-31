@@ -315,7 +315,10 @@ $('#cc-num').on('input click', (e) => {
         if (!isValidCardNumber($(e.target).val())) {
             text = 'Please, enter a number between 13 and 16 digits long'
             $('div.col-6 label span').text(text);
+        
 
+        } else{
+            $('#cc-num').css('border', '');
         }
     }
 
