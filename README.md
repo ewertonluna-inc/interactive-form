@@ -27,9 +27,4 @@
     - Already worked on it as mentioned on the previous topic, showing a message in real time to the user
     when they're filling the credit card number field.
 
-
-The code definetly code use some refactoring, so I'll try to improve it later. But for now, it seems to be working fine.
-
-
-
-
+TODO: Code refactoring.
