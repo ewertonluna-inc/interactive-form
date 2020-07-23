@@ -1,4 +1,4 @@
-# techdegree_project_3
+# Interactive Form
  Project 3 - Interactive Form
 
  In this project, I used jQuery to enhance an interactive registration form for a fictional
